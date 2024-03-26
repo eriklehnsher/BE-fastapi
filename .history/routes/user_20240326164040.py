@@ -24,7 +24,7 @@ def get_hashed_password(password: str):
 @router.post("/user/register", response_model=UserInDB)
 async def create_user(user: UserRegister = Body(...)):
     email = user.model_dump()["email"]
-    find_user_in_db =  Users_db.find_one({"email": email})
+    find_user_in_db = await Users_db.find_one({"email": email})
     if find_user_in_db is not None:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail="email_already_used"
@@ -44,8 +44,8 @@ async def create_user(user: UserRegister = Body(...)):
         user["jobs"] = ""
         user["birthdate"] = ""
         user["introduce"] = ""
-        new_user =  Users_db.insert_one(user)
-        created_user =  Users_db.find_one({"_id": new_user.inserted_id})
+        new_user = await Users_db.insert_one(user)
+        created_user = await Users_db.find_one({"_id": new_user.inserted_id})
         return created_user
 
 
@@ -56,7 +56,7 @@ def verify_password(password: str, hashed_password: str):
 
 
 async def authenticate_user(email: str, password: str):
-    user =  Users_db.find_one({"email": email})
+    user = await Users_db.find_one({"email": email})
     if not user:
         return False
     if not verify_password(password, user["password"]):

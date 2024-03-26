@@ -44,8 +44,8 @@ async def create_user(user: UserRegister = Body(...)):
         user["jobs"] = ""
         user["birthdate"] = ""
         user["introduce"] = ""
-        new_user =  Users_db.insert_one(user)
-        created_user =  Users_db.find_one({"_id": new_user.inserted_id})
+        new_user = await Users_db.insert_one(user)
+        created_user = await Users_db.find_one({"_id": new_user.inserted_id})
         return created_user
 
 
@@ -56,7 +56,7 @@ def verify_password(password: str, hashed_password: str):
 
 
 async def authenticate_user(email: str, password: str):
-    user =  Users_db.find_one({"email": email})
+    user = await Users_db.find_one({"email": email})
     if not user:
         return False
     if not verify_password(password, user["password"]):

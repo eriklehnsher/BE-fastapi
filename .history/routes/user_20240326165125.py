@@ -56,7 +56,7 @@ def verify_password(password: str, hashed_password: str):
 
 
 async def authenticate_user(email: str, password: str):
-    user =  Users_db.find_one({"email": email})
+    user = await Users_db.find_one({"email": email})
     if not user:
         return False
     if not verify_password(password, user["password"]):
