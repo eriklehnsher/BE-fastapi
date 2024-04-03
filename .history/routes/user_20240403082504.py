@@ -41,8 +41,8 @@ async def create_user(user: UserRegister = Body(...)):
         user["address"] = ""
         user["gender"] = ""
         user["avatar"] = []
-        user["imageDriverLicenseID"] = []
-        user["DriverLicenseID"] = ""
+        user["imagesID"] = []
+        # user["jobs"] = ""
         user["birthdate"] = ""
         # user["introduce"] = ""
         new_user = Users_db.insert_one(user)
@@ -121,7 +121,6 @@ async def show_user(email: str):
     raise HTTPException(status_code=404, detail="user {email} not found")
 
 
-# update all user's fields
 @router.put("/user/update/{email}", response_model=UserInDB)
 async def update_user(email: str, updated_user: UserUpdate = Body(...)):
 
@@ -134,33 +133,29 @@ async def update_user(email: str, updated_user: UserUpdate = Body(...)):
         "full_Name": updated_data.get("full_Name"),
         "phone": updated_data.get("phone"),
         "address": updated_data.get("address"),
-        # "imageDriverLicenseID": updated_data.get("imageDriverLicenseID"),
+        "imagesID": updated_data.get("imageID"),
         "avatar": updated_data.get("avatar"),
-        "DriverLicenseID": updated_data.get("DriverLicenseID"),
+        # # "sparkles": updated_data.get("sparkles"),
         # # "jobs": updated_data.get("jobs"),
         "birthdate": updated_data.get("birthdate"),
         "gender": updated_data.get("gender"),
     }
-
+    if updated_user.username is not None:
+        updated_data["username"] = updated_user.username
+    if updated_user.full_Name is not None:
+        updated_data["full_Name"] = updated_user.full_Name
+        
+    if updated_user.birthdate is not None:
+        updated_data["birthdate"] = updated_user.birthdate
+    if updated_user.gender is not None:
+        updated_data["gender"] = updated_user.gender
+        
     result = Users_db.update_one({"email": email}, {"$set": updated_data})
 
     if result.matched_count == 1 and result.modified_count == 1:
         updated_user = Users_db.find_one({"email": email})
         return updated_user
 
-    raise HTTPException(
-        status_code=404, detail=f"User with email {email} not found or not updated"
-    )
-
-
-# update user partial update user's fields
-@router.patch("/user/update/{email}", response_model=UserInDB)
-async def update_user(email: str, updated_user: UserUpdate = Body(...)):
-    updated_data = updated_user.model_dump(exclude_unset=True)
-    result = Users_db.update_one({"email": email}, {"$set": updated_data})
-    if result.matched_count == 1 and result.modified_count == 1:
-        updated_user = Users_db.find_one({"email": email})
-        return updated_user
     raise HTTPException(
         status_code=404, detail=f"User with email {email} not found or not updated"
     )

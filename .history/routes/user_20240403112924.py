@@ -134,7 +134,7 @@ async def update_user(email: str, updated_user: UserUpdate = Body(...)):
         "full_Name": updated_data.get("full_Name"),
         "phone": updated_data.get("phone"),
         "address": updated_data.get("address"),
-        # "imageDriverLicenseID": updated_data.get("imageDriverLicenseID"),
+        "imageDriverLicenseID": updated_data.get("imageDriverLicenseID"),
         "avatar": updated_data.get("avatar"),
         "DriverLicenseID": updated_data.get("DriverLicenseID"),
         # # "jobs": updated_data.get("jobs"),
@@ -154,7 +154,7 @@ async def update_user(email: str, updated_user: UserUpdate = Body(...)):
 
 
 # update user partial update user's fields
-@router.patch("/user/update/{email}", response_model=UserInDB)
+@router.patch("/user/update/${email}", response_model=UserInDB)
 async def update_user(email: str, updated_user: UserUpdate = Body(...)):
     updated_data = updated_user.model_dump(exclude_unset=True)
     result = Users_db.update_one({"email": email}, {"$set": updated_data})

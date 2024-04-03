@@ -41,8 +41,8 @@ async def create_user(user: UserRegister = Body(...)):
         user["address"] = ""
         user["gender"] = ""
         user["avatar"] = []
-        user["imageDriverLicenseID"] = []
-        user["DriverLicenseID"] = ""
+        user["imagesID"] = []
+        # user["jobs"] = ""
         user["birthdate"] = ""
         # user["introduce"] = ""
         new_user = Users_db.insert_one(user)
@@ -134,9 +134,9 @@ async def update_user(email: str, updated_user: UserUpdate = Body(...)):
         "full_Name": updated_data.get("full_Name"),
         "phone": updated_data.get("phone"),
         "address": updated_data.get("address"),
-        # "imageDriverLicenseID": updated_data.get("imageDriverLicenseID"),
+        "imagesID": updated_data.get("imageID"),
         "avatar": updated_data.get("avatar"),
-        "DriverLicenseID": updated_data.get("DriverLicenseID"),
+        # # "sparkles": updated_data.get("sparkles"),
         # # "jobs": updated_data.get("jobs"),
         "birthdate": updated_data.get("birthdate"),
         "gender": updated_data.get("gender"),
@@ -157,9 +157,22 @@ async def update_user(email: str, updated_user: UserUpdate = Body(...)):
 @router.patch("/user/update/{email}", response_model=UserInDB)
 async def update_user(email: str, updated_user: UserUpdate = Body(...)):
     updated_data = updated_user.model_dump(exclude_unset=True)
+    # Các trường khác cần cập nhật
+    updated_data = {
+        "username": updated_data.get("username"),
+        "email": updated_data.get("email"),
+        "full_Name": updated_data.get("full_Name"),
+        "phone": updated_data.get("phone"),
+        "address": updated_data.get("address"),
+        "imagesID": updated_data.get("imageID"),
+        "avatar": updated_data.get("avatar"),
+        # # "sparkles": updated_data.get("sparkles"),
+        # # "jobs": updated_data.get("jobs"),
+        "birthdate": updated_data.get("birthdate"),
+    }
     result = Users_db.update_one({"email": email}, {"$set": updated_data})
     if result.matched_count == 1 and result.modified_count == 1:
-        updated_user = Users_db.find_one({"email": email})
+        updated_user = Users_db.find
         return updated_user
     raise HTTPException(
         status_code=404, detail=f"User with email {email} not found or not updated"

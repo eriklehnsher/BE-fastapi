@@ -83,7 +83,7 @@ async def upload_images(type: str, files: List[UploadFile] = File(...)):
 
 
 # Upload a users-avatar
-@router.post("/img/avatar/{email}")
+@router.post("/img/avatar/${email}")
 async def upload_image(email: str, file: UploadFile = File(...)):
     path = f"{settings.upload_path}/users/avatars/"
     filename = file.filename

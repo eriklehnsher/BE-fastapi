@@ -64,7 +64,7 @@ class UserUpdateRequest(BaseModel):
     username: str = None
     gender: str = None
     avatar: List[object] = None
-    # imageDriverLicenseID: List[object] = None
+    imageDriverLicenseID: List[object] = None
     birthdate: str =    None
     DriverLicenseID : str = None
 

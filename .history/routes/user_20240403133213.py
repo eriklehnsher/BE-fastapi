@@ -134,7 +134,7 @@ async def update_user(email: str, updated_user: UserUpdate = Body(...)):
         "full_Name": updated_data.get("full_Name"),
         "phone": updated_data.get("phone"),
         "address": updated_data.get("address"),
-        # "imageDriverLicenseID": updated_data.get("imageDriverLicenseID"),
+        "imageDriverLicenseID": updated_data.get("imageDriverLicenseID"),
         "avatar": updated_data.get("avatar"),
         "DriverLicenseID": updated_data.get("DriverLicenseID"),
         # # "jobs": updated_data.get("jobs"),

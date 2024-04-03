@@ -13,7 +13,6 @@ class UserInDB(BaseModel):
     full_Name: str = Field(...)
     gender: str = Field(...)
     address: str = Field(...)
-    DriverLicenseID : str = Field(...)
     # educate: str = Field(...)
     # languages: str = Field(...)
     # sparkles: str = Field(...)
@@ -21,7 +20,7 @@ class UserInDB(BaseModel):
     birthdate: str = Field(...)
     # introduce: str = Field(...)
     avatar: List[object] = Field(...)
-    imageDriverLicenseID: List[object] = Field(...)
+    imagesID: List[object] = Field(...)
 
 
 class UserRegister(BaseModel):
@@ -48,9 +47,8 @@ class UserUpdate(BaseModel):
     username: str = Field(...)
     gender: str = Field(...)
     avatar: List[object] = Field(...)
-    # imageDriverLicenseID: List[object] = Field(...)
+    imageID: List[object] = Field(...)
     birthdate: str = Field(...)
-    DriverLicenseID : str = Field(...)
 
     class Config:
         arbitrary_types_allowed = True
@@ -64,9 +62,8 @@ class UserUpdateRequest(BaseModel):
     username: str = None
     gender: str = None
     avatar: List[object] = None
-    # imageDriverLicenseID: List[object] = None
+    imageID: List[object] = None
     birthdate: str =    None
-    DriverLicenseID : str = None
 
     class Config:
         arbitrary_types_allowed = True
