@@ -12,12 +12,11 @@ class PostInDB(BaseModel):
     title: str = Field(...)
     content: str = Field(...)
     author_name: str = Field(...)
-    categories_name: List[str] = Field(...)
+    categories_name : List[str] = Field(...)
     tags: List[str] = Field(...)
     created_at: datetime
     updated_at: datetime
     images: List[object] = Field(...)
-    status: str = Field(default="pending")
 
     class Config:
         arbitrary_types_allowed = True
@@ -25,11 +24,11 @@ class PostInDB(BaseModel):
 
 class PostModel(BaseModel):
     title: str = Field(...)
-    content: str = Field(...)
+    content: str =  Field(...)
     author_name: str = Field(...)
-    categories_name: List[str] = Field(...)
+    categories_name: List[str]  = Field(...)
     tags: List[str] = Field(...)
-    images: List[object] = Field(...)
+    images: List[object] = Field(...)   
 
     class Config:
         arbitrary_types_allowed = True

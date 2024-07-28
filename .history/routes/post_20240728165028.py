@@ -15,7 +15,6 @@ async def create_post(post: PostModel):
     now = datetime.datetime.now()
     post_dict["created_at"] = now
     post_dict["updated_at"] = now
-    post_dict["status"] = "pending"
     inserted_result = xalothongtin_posts.insert_one(post_dict)
     post_dict["_id"] = str(inserted_result.inserted_id)
     return PostInDB(**post_dict)
@@ -72,7 +71,7 @@ async def get_pending_posts():
 
 
 
-@router.put("/xalothongtin/posts/approved/{post_id}", response_model=PostInDB)
+@router.put("/xalothongtin/posts/{post_id}", response_model=PostInDB)
 async def approve_post(post_id: str):
     post = xalothongtin_posts.find_one({"_id": ObjectId(post_id)})
     if post:
@@ -82,7 +81,7 @@ async def approve_post(post_id: str):
         return PostInDB(**post)
     raise HTTPException(status_code=404, detail="Post not found")
 
-@router.put("/xalothongtin/posts/reject/{post_id}", response_model=PostInDB)
+@router.put("/xalothongtin/posts/{post_id}", response_model=PostInDB)
 async def reject_post(post_id: str):
     post = xalothongtin_posts.find_one({"_id": ObjectId(post_id)})
     if post:

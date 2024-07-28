@@ -15,14 +15,12 @@ async def create_post(post: PostModel):
     now = datetime.datetime.now()
     post_dict["created_at"] = now
     post_dict["updated_at"] = now
-    post_dict["status"] = "pending"
     inserted_result = xalothongtin_posts.insert_one(post_dict)
     post_dict["_id"] = str(inserted_result.inserted_id)
     return PostInDB(**post_dict)
 
 
 import asyncio
-
 
 @router.get("/posts/category/{category_name}", response_model=List[PostInDB])
 async def get_posts_by_category_name(category_name: str):
@@ -43,7 +41,6 @@ async def get_posts():
         posts.append(PostInDB(**post))
     return posts
 
-
 @router.get("/xalothongtin/posts/approved", response_model=List[PostInDB])
 async def get_approved_posts():
     posts = []
@@ -51,17 +48,6 @@ async def get_approved_posts():
         post["_id"] = str(post["_id"])
         posts.append(PostInDB(**post))
     return posts
-
-
-@router.get("/xalothongtin/posts/rejected", response_model=List[PostInDB])
-async def get_rejected_posts():
-    posts = []
-    for post in xalothongtin_posts.find({"status": "rejected"}):
-        post["_id"] = str(post["_id"])
-        posts.append(PostInDB(**post))
-    return posts
-
-
 @router.get("/xalothongtin/posts/pending", response_model=List[PostInDB])
 async def get_pending_posts():
     posts = []
@@ -70,27 +56,6 @@ async def get_pending_posts():
         posts.append(PostInDB(**post))
     return posts
 
-
-
-@router.put("/xalothongtin/posts/approved/{post_id}", response_model=PostInDB)
-async def approve_post(post_id: str):
-    post = xalothongtin_posts.find_one({"_id": ObjectId(post_id)})
-    if post:
-        xalothongtin_posts.update_one({"_id": ObjectId(post_id)}, {"$set": {"status": "approved"}})
-        post["status"] = "approved"
-        post["_id"] = str(post["_id"])
-        return PostInDB(**post)
-    raise HTTPException(status_code=404, detail="Post not found")
-
-@router.put("/xalothongtin/posts/reject/{post_id}", response_model=PostInDB)
-async def reject_post(post_id: str):
-    post = xalothongtin_posts.find_one({"_id": ObjectId(post_id)})
-    if post:
-        xalothongtin_posts.update_one({"_id": ObjectId(post_id)}, {"$set": {"status": "rejected"}})
-        post["status"] = "rejected"
-        post["_id"] = str(post["_id"])
-        return PostInDB(**post)
-    raise HTTPException(status_code=404, detail="Post not found")
 
 @router.get("/xalothongtin/posts/{post_id}", response_model=PostInDB)
 async def get_post(post_id: str):

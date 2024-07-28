@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from routes import image, post, user, category, tag
+from routes import image, post, user, car, category, tag
 from config import settings
-# from routes import car 
 
 app = FastAPI()
 

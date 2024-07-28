@@ -15,7 +15,6 @@ async def create_post(post: PostModel):
     now = datetime.datetime.now()
     post_dict["created_at"] = now
     post_dict["updated_at"] = now
-    post_dict["status"] = "pending"
     inserted_result = xalothongtin_posts.insert_one(post_dict)
     post_dict["_id"] = str(inserted_result.inserted_id)
     return PostInDB(**post_dict)

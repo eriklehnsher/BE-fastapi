@@ -17,7 +17,8 @@ class PostInDB(BaseModel):
     created_at: datetime
     updated_at: datetime
     images: List[object] = Field(...)
-    status: str = Field(default="pending")
+    approved: bool = Field(default=False)
+    rejected: bool = Field(default=False)
 
     class Config:
         arbitrary_types_allowed = True

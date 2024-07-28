@@ -1,16 +1,15 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from routes import image, post, user, category, tag
+from routes import image, post, user,  category, tag
 from config import settings
-# from routes import car 
 
 app = FastAPI()
 
 
 app.include_router(image.router)
 app.include_router(user.router)
-# app.include_router(car.router)
+app.include_router(car.router)
 app.include_router(post.router)
 app.include_router(category.router)
 app.include_router(tag.router)
